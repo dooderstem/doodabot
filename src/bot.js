@@ -38,3 +38,9 @@ class Doodabot extends Discord.Client {
 
 const doodabot = new Doodabot();
 doodabot.login(process.env.DISCORD_TOKEN);
+
+fs.readdirSync('./src/handlers').forEach((dir) => {
+  fs.readdirSync(`./src/handlers/${dir}`).forEach((handler) => {
+    require(`./handlers/${dir}/${handler}`)(doodabot);
+  });
+});
