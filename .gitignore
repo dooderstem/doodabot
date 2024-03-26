@@ -16,3 +16,4 @@ dist
 archive
 node_modules/
 local.session.sql
+*/config/webhooks.json
