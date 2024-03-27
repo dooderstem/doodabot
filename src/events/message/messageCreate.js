@@ -1,10 +1,30 @@
 const Discord = require('discord.js');
 
 module.exports = async (client, message) => {
+  const dmLog = new Discord.WebhookClient({
+    url: client.webhooks.dmLogs.url,
+  });
 
   const msg = message;
   const discordConfig = client.config.discord;
   if (msg.author.bot) return;
+
+  let dmLogEm = new Discord.EmbedBuilder()
+    .setTitle(`💬・New DM message!`)
+    .setDescription(`Bot has received a new DM message!`)
+    .addFields({
+      name: `**👤┆Send By:** ${msg.author} (${msg.author.tag})`,
+      value: `__**💬┆Message:**__\n${msg.content}` || 'No content provided.',
+    })
+    .setColor(client.config.colors.normal)
+    .setTimestamp();
+
+  if (msg.attachments.size > 0)
+    dmLogEm.addField(
+      `📃┆Attachments`,
+      `${msg.attachments.first()?.url}`,
+      false
+    );
 
   const mentionBuilder = {
     embeds: [
@@ -48,6 +68,22 @@ module.exports = async (client, message) => {
       ),
     ],
   };
+
+  if (msg.channel.type === 1) {
+    if (
+      msg.mentions.users.first() &&
+      msg.mentions.users.first().id == client.user.id &&
+      msg.content.split(' ').length == 1
+    ) {
+      msg.react('👑');
+      msg.react('⚔️');
+      msg.channel.send(mentionBuilder);
+    } else
+      return dmLog.send({
+        username: 'Logger',
+        embeds: [dmLogEm],
+      });
+  }
 
   if (msg.guild) {
     let row = await client.database.queryAsync(
