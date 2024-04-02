@@ -1,8 +1,13 @@
-require('dotenv').config();
-const Discord = require('discord.js');
-const chalk = require('chalk');
+import Discord from 'discord.js';
+import dotenv from 'dotenv';
+import express from 'express';
+import chalk from 'chalk';
+import fs from 'fs';
 
-const webhook = require('./config/webhooks.json');
+dotenv.config();
+
+const webhook = JSON.parse(fs.readFileSync('src/config/webhooks.json', 'utf8'));
+const packageJSON = JSON.parse(fs.readFileSync('package.json', 'utf-8'));
 
 const startLogs = new Discord.WebhookClient({
   url: webhook.startLogs.url,
@@ -12,17 +17,19 @@ const shardLogs = new Discord.WebhookClient({
   url: webhook.shardLogs.url,
 });
 
-const manager = new Discord.ShardingManager('./src/bot.js', {
+const doodabot = './src/bot.js';
+const manager = new Discord.ShardingManager(doodabot, {
   totalShards: 2,
   token: process.env.DISCORD_TOKEN,
   respawn: true,
 });
 
-const express = require('express');
 const app = express();
+
 app.get('/', function (req, res) {
   res.send('Hello World');
 });
+
 app.listen(3000);
 
 console.clear();

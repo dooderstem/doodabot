@@ -1,22 +1,19 @@
-const Discord = require('discord.js');
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
-const chalk = require('chalk');
-const fs = require('fs');
+import { REST } from '@discordjs/rest';
+import { Routes } from 'discord-api-types/v9';
+import chalk from 'chalk';
+import fs from 'fs';
+import path from 'path';
 
-module.exports = async (client) => {
+export default async (client) => {
   const interactions = [];
 
   // Load interactions
-  const slash = loadFromDirectory(
-    client,
-    './src/interactions',
-    client.interactions
-  );
+  const slash = await loadCommands('./src/interactions', client.interactions);
 
   slash.each((cmd) => interactions.push(cmd.data));
 
   const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
+
   (async () => {
     try {
       await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
@@ -28,21 +25,20 @@ module.exports = async (client) => {
   })();
 
   // Load commands
-  const cmds = loadFromDirectory(client, './src/commands', client.commands);
-
-  cmds.each((cmd) => client.commands.set(cmd.data.name, cmd));
+  await loadCommands('./src/commands', client.commands);
 };
 
-function loadFromDirectory(client, directory, collection) {
-  fs.readdirSync(directory).forEach((dirs) => {
+async function loadCommands(directory, collection) {
+  const dirs = fs.readdirSync(directory);
+  for (const dir of dirs) {
     const files = fs
-      .readdirSync(`${directory}/${dirs}`)
+      .readdirSync(path.join(directory, dir))
       .filter((file) => file.endsWith('.js'));
-
     for (const file of files) {
-      const item = require(`${process.cwd()}/${directory}/${dirs}/${file}`);
-      collection.set(item.data.name, item);
+      const cmdFile = path.join(directory, dir, file);
+      const { default: command } = await import(`../../../${cmdFile}`);
+      collection.set(command.data.name, command);
     }
-  });
+  }
   return collection;
 }

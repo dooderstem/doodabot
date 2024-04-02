@@ -1,6 +1,9 @@
-const mysql = require('mysql2');
-const util = require('util');
-const chalk = require('chalk');
+import mysql from 'mysql2';
+import util from 'util';
+import chalk from 'chalk';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const connection = mysql.createConnection({
   host: process.env.MYSQL_HOST,
@@ -25,4 +28,4 @@ connection.connect((err) => {
   );
 });
 
-module.exports = connection;
+export default connection;

@@ -1,6 +1,10 @@
-require('dotenv').config();
-const Discord = require('discord.js');
-const fs = require('fs');
+import Discord from 'discord.js';
+import dotenv from 'dotenv';
+import fs from 'fs';
+
+dotenv.config();
+import config from './config/bot.js';
+import database from './database/connect.js';
 
 class Doodabot extends Discord.Client {
   constructor() {
@@ -28,9 +32,11 @@ class Doodabot extends Discord.Client {
         Discord.Partials.User,
       ],
     });
-    this.config = require('./config/bot');
-    this.database = require('./database/connect');
-    this.webhooks = require('./config/webhooks.json');
+    this.config = config;
+    this.database = database;
+    this.webhooks = JSON.parse(
+      fs.readFileSync('src/config/webhooks.json', 'utf8')
+    );
     this.commands = new Discord.Collection();
     this.interactions = new Discord.Collection();
   }
@@ -39,8 +45,15 @@ class Doodabot extends Discord.Client {
 const doodabot = new Doodabot();
 doodabot.login(process.env.DISCORD_TOKEN);
 
-fs.readdirSync('./src/handlers').forEach((dir) => {
-  fs.readdirSync(`./src/handlers/${dir}`).forEach((handler) => {
-    require(`./handlers/${dir}/${handler}`)(doodabot);
+async function importHandlers(doodabot) {
+  fs.readdirSync('./src/handlers').forEach((dirs) => {
+    fs.readdirSync(`./src/handlers/${dirs}`).forEach(async (handlers) => {
+      const { default: handlerFunction } = await import(
+        `./handlers/${dirs}/${handlers}`
+      );
+      handlerFunction(doodabot);
+    });
   });
-});
+}
+
+importHandlers(doodabot);

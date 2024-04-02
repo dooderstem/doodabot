@@ -1,7 +1,7 @@
-const Discord = require('discord.js');
-const chalk = require('chalk');
+import Discord from 'discord.js';
+import chalk from 'chalk';
 
-module.exports = async (client) => {
+export default async (client) => {
   const readyLogs = new Discord.WebhookClient({
     url: client.webhooks.readyLogs.url,
   });
