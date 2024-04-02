@@ -17,17 +17,19 @@ const shardLogs = new Discord.WebhookClient({
   url: webhook.shardLogs.url,
 });
 
-const manager = new Discord.ShardingManager('./src/bot.js', {
+const doodabot = './src/bot.js';
+const manager = new Discord.ShardingManager(doodabot, {
   totalShards: 2,
   token: process.env.DISCORD_TOKEN,
   respawn: true,
 });
 
-const express = require('express');
 const app = express();
+
 app.get('/', function (req, res) {
   res.send('Hello World');
 });
+
 app.listen(3000);
 
 console.clear();

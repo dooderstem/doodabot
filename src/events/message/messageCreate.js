@@ -1,14 +1,13 @@
-
-module.exports = async (client, message) => {
-  const dmLog = new Discord.WebhookClient({
-    url: client.webhooks.dmLogs.url,
-  });
 import Discord from 'discord.js';
 
 export default async (client, message) => {
   const msg = message;
   const discordConfig = client.config.discord;
   if (msg.author.bot) return;
+
+  const dmLog = new Discord.WebhookClient({
+    url: client.webhooks.dmLogs.url,
+  });
 
   let dmLogEm = new Discord.EmbedBuilder()
     .setTitle(`💬・New DM message!`)
@@ -132,11 +131,11 @@ export default async (client, message) => {
       .split(/ +/g);
 
     const cmdName = args.shift().toLowerCase();
-    
+
     const cmd = client.commands.get(cmdName);
+    // console.log(cmd);
 
     if (!cmd) return;
-    else await cmd.run(client, message, args);
 
     if (
       msg.mentions.users.first() &&

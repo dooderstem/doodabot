@@ -12,5 +12,7 @@ export default function loadEvents(client) {
         client
           .on(file.split('.')[0], event.bind(null, client))
           .setMaxListeners(0);
+      })();
     }
   });
+}
