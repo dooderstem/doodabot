@@ -1,16 +1,16 @@
-const fs = require('fs');
+import fs from 'fs';
 
-module.exports = (client) => {
+export default function loadEvents(client) {
   fs.readdirSync('./src/events').forEach((dirs) => {
     const events = fs
       .readdirSync(`./src/events/${dirs}`)
       .filter((files) => files.endsWith('.js'));
 
     for (const file of events) {
-      const event = require(`../../events/${dirs}/${file}`);
-      client
-        .on(file.split('.')[0], event.bind(null, client))
-        .setMaxListeners(0);
+      (async () => {
+        const event = (await import(`../../events/${dirs}/${file}`)).default;
+        client
+          .on(file.split('.')[0], event.bind(null, client))
+          .setMaxListeners(0);
     }
   });
-};

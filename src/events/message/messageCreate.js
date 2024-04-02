@@ -1,10 +1,11 @@
-const Discord = require('discord.js');
 
 module.exports = async (client, message) => {
   const dmLog = new Discord.WebhookClient({
     url: client.webhooks.dmLogs.url,
   });
+import Discord from 'discord.js';
 
+export default async (client, message) => {
   const msg = message;
   const discordConfig = client.config.discord;
   if (msg.author.bot) return;

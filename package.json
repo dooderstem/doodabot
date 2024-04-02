@@ -8,6 +8,7 @@
     "start": "node src/index.js",
     "login": "node src/bot.js"
   },
+  "type": "module",
   "author": "dooderstem",
   "license": "ISC",
   "dependencies": {

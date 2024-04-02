@@ -1,9 +1,8 @@
-const Discord = require('discord.js');
+import Discord from 'discord.js';
 
-module.exports = async (client, interaction) => {
+export default async (client, interaction) => {
   if (interaction.isChatInputCommand() || interaction.isContextMenu()) {
     const cmd = client.interactions.get(interaction.commandName);
-
     cmd.run(client, interaction, interaction.options._hoistedOptions);
   }
 };

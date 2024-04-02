@@ -1,6 +1,4 @@
-const Discord = require('discord.js');
-
-module.exports = {
+export default {
   data: {
     name: 'ping',
     description: "Checks the bot's latency.",

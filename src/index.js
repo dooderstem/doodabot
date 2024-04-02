@@ -1,8 +1,13 @@
-require('dotenv').config();
-const Discord = require('discord.js');
-const chalk = require('chalk');
+import Discord from 'discord.js';
+import dotenv from 'dotenv';
+import express from 'express';
+import chalk from 'chalk';
+import fs from 'fs';
 
-const webhook = require('./config/webhooks.json');
+dotenv.config();
+
+const webhook = JSON.parse(fs.readFileSync('src/config/webhooks.json', 'utf8'));
+const packageJSON = JSON.parse(fs.readFileSync('package.json', 'utf-8'));
 
 const startLogs = new Discord.WebhookClient({
   url: webhook.startLogs.url,
