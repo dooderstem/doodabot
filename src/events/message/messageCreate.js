@@ -133,9 +133,9 @@ export default async (client, message) => {
     const cmdName = args.shift().toLowerCase();
 
     const cmd = client.commands.get(cmdName);
-    // console.log(cmd);
 
     if (!cmd) return;
+    else await cmd.run(client, message, args);
 
     if (
       msg.mentions.users.first() &&
