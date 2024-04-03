@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 export default {
   colors: {
     success: '#57F287',
@@ -9,5 +12,7 @@ export default {
     id: '',
     prefix: ';',
     footer: ``,
+    botInvite: process.env.BOT_INVITE,
+    serverInvite: process.env.SERVER_INVITE,
   },
 };
