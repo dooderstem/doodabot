@@ -28,4 +28,7 @@ connection.connect((err) => {
   );
 });
 
+import tables from './tables.js';
+await tables(connection);
+
 export default connection;
