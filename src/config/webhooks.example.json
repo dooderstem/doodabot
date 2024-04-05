@@ -1,0 +1,17 @@
+{
+  "shardLogs": {
+    "url": "https://discord.com/api/webhooks/${ID}/${TOKEN}"
+  },
+  "startLogs": {
+    "url": "https://discord.com/api/webhooks/${ID}/${TOKEN}"
+  },
+  "readyLogs": {
+    "url": "https://discord.com/api/webhooks/${ID}/${TOKEN}"
+  },
+  "errorLogs": {
+    "url": "https://discord.com/api/webhooks/${ID}/${TOKEN}"
+  },
+  "dmLogs": {
+    "url": "https://discord.com/api/webhooks/${ID}/${TOKEN}"
+  }
+}
