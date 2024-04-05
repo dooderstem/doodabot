@@ -87,25 +87,25 @@ export default async (client, message) => {
 
   if (msg.guild) {
     let row = await client.database.queryAsync(
-      `SELECT * FROM guild WHERE Guild = '${msg.guild.id}';`
+      `SELECT * FROM \`guild\` WHERE \`Guild\` = '${msg.guild.id}';`
     );
 
     let guildSettings = row[0];
 
     if (!guildSettings) {
       await client.database.queryAsync(
-        `INSERT INTO guild (Guild, Prefix) VALUES ('${msg.guild.id}', '${discordConfig.prefix}');`
+        `INSERT INTO \`guild\` (\`Guild\`, \`Prefix\`) VALUES ('${msg.guild.id}', '${discordConfig.prefix}');`
       );
 
       row = await client.database.queryAsync(
-        `SELECT * FROM guild WHERE Guild = '${msg.guild.id}';`
+        `SELECT * FROM \`guild\` WHERE \`Guild\` = '${msg.guild.id}';`
       );
       guildSettings = row[0];
     }
 
     if (!guildSettings || !guildSettings.Prefix) {
       row = await client.database.queryAsync(
-        `UPDATE guild SET Prefix = '${discordConfig.prefix}' WHERE Guild = '${msg.guild.id}';`
+        `UPDATE \`guild\` SET \`Prefix\` = '${discordConfig.prefix}' WHERE \`Guild\` = '${msg.guild.id}';`
       );
       guildSettings = row[0];
     }

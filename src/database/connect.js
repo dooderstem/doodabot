@@ -5,18 +5,18 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const connection = mysql.createConnection({
+const database = mysql.createConnection({
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
   password: process.env.MYSQL_PW,
   database: process.env.MYSQL_DB,
 });
 
-connection.queryAsync = util.promisify(connection.query);
+database.queryAsync = util.promisify(database.query);
 
-connection.connect((err) => {
+database.connect((err) => {
   if (err) {
-    console.error('error connecting: ' + err.stack);
+    console.log('error connecting: ' + err.stack);
     return;
   }
 
@@ -28,7 +28,7 @@ connection.connect((err) => {
   );
 });
 
-import tables from './tables.js';
-await tables(connection);
+import tables from './schema.js';
+await tables(database);
 
-export default connection;
+export default database;
