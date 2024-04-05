@@ -1,12 +1,17 @@
+dotenv.config();
 import Discord from 'discord.js';
 import dotenv from 'dotenv';
 import express from 'express';
 import chalk from 'chalk';
 import fs from 'fs';
 
-dotenv.config();
+const webhooksFile = 'src/config/webhooks.json';
+const webhooksExampleFile = 'src/config/webhooks.example.json';
 
-const webhook = JSON.parse(fs.readFileSync('src/config/webhooks.json', 'utf8'));
+if (!fs.existsSync(webhooksFile))
+  fs.writeFileSync(webhooksFile, fs.readFileSync(webhooksExampleFile, 'utf-8'));
+
+const webhook = JSON.parse(fs.readFileSync(webhooksFile, 'utf8'));
 const packageJSON = JSON.parse(fs.readFileSync('package.json', 'utf-8'));
 
 const startLogs = new Discord.WebhookClient({
