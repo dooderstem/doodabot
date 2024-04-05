@@ -9,7 +9,7 @@ export default async (client, message) => {
     url: client.webhooks.dmLogs.url,
   });
 
-  let dmLogEm = new Discord.EmbedBuilder()
+  const dmLogEm = new Discord.EmbedBuilder()
     .setTitle(`💬・New DM message!`)
     .setDescription(`Bot has received a new DM message!`)
     .addFields({

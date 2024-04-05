@@ -2,10 +2,10 @@ import Discord from 'discord.js';
 import dotenv from 'dotenv';
 import fs from 'fs';
 
+import database from './database/connect.js';
 import config from './config/bot.js';
 
 dotenv.config();
-import database from './database/connect.js';
 
 class Doodabot extends Discord.Client {
   constructor() {

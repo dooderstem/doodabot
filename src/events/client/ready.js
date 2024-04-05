@@ -22,7 +22,6 @@ export default async (client) => {
     { name: `${client.channels.cache.size} Channels`, type: 0 }, // PLAYING
     { name: `${client.users.cache.size} Users`, type: 3 }, // WATCHING
   ];
-  const status = ['online', 'dnd', 'idle'];
 
   let i = 0;
   setInterval(() => {
