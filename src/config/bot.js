@@ -10,7 +10,7 @@ export default {
 
   discord: {
     id: '',
-    prefix: ';',
+    prefix: '>>',
     footer: ``,
     botInvite: process.env.BOT_INVITE,
     serverInvite: process.env.SERVER_INVITE,

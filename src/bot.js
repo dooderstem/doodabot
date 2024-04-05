@@ -2,8 +2,9 @@ import Discord from 'discord.js';
 import dotenv from 'dotenv';
 import fs from 'fs';
 
-dotenv.config();
 import config from './config/bot.js';
+
+dotenv.config();
 import database from './database/connect.js';
 
 class Doodabot extends Discord.Client {
@@ -43,9 +44,8 @@ class Doodabot extends Discord.Client {
 }
 
 const doodabot = new Doodabot();
-doodabot.login(process.env.DISCORD_TOKEN);
 
-async function importHandlers(doodabot) {
+((doodabot) => {
   fs.readdirSync('./src/handlers').forEach((dirs) => {
     fs.readdirSync(`./src/handlers/${dirs}`).forEach(async (handlers) => {
       const { default: handlerFunction } = await import(
@@ -54,6 +54,6 @@ async function importHandlers(doodabot) {
       handlerFunction(doodabot);
     });
   });
-}
+})(doodabot);
 
-importHandlers(doodabot);
+doodabot.login(process.env.DISCORD_TOKEN);

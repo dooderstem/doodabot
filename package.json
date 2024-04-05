@@ -2,23 +2,24 @@
   "name": "doodabot",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "./src/index.js",
   "scripts": {
-    "start:dev": "nodemon src/index.js",
-    "start": "node src/bot.js"
+    "start": "node src/bot.js",
+    "start:dev": "nodemon src/index.js"
   },
   "type": "module",
   "author": "dooderstem",
   "license": "ISC",
   "dependencies": {
     "@discordjs/rest": "^2.2.0",
+    "axios": "^1.6.8",
     "chalk": "^4.1.2",
     "discord-api-types": "^0.37.76",
     "discord.js": "^14.14.1",
     "dotenv": "^10.0.0",
     "express": "^4.18.1",
     "mysql2": "^3.9.2",
-    "node-fetch": "^2.6.7",
+    "popcat-wrapper": "^1.5.5",
     "util": "^0.12.4"
   },
   "devDependencies": {
