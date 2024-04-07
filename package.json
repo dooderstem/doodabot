@@ -1,11 +1,12 @@
 {
   "name": "doodabot",
   "version": "1.0.0",
-  "description": "",
-  "main": "./src/index.js",
+  "description": "A powerful, multi-purpose Discord bot.",
+  "main": "/src/index.js",
   "scripts": {
-    "start": "node src/bot.js",
-    "start:dev": "nodemon src/index.js"
+    "start": "node src/index.js",
+    "start:dev": "nodemon src/index.js",
+    "start:bot": "node src/bot.js"
   },
   "type": "module",
   "author": "dooderstem",
