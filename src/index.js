@@ -5,13 +5,13 @@ import express from 'express';
 import chalk from 'chalk';
 import fs from 'fs';
 
-const webhooksFile = 'src/config/webhooks.json';
-const webhooksExampleFile = 'src/config/webhooks.example.json';
+if (!fs.existsSync('src/config/webhooks.json'))
+  fs.writeFileSync(
+    'src/config/webhooks.json',
+    fs.readFileSync('src/config/webhooks.example.json', 'utf-8')
+  );
 
-if (!fs.existsSync(webhooksFile))
-  fs.writeFileSync(webhooksFile, fs.readFileSync(webhooksExampleFile, 'utf-8'));
-
-const webhook = JSON.parse(fs.readFileSync(webhooksFile, 'utf8'));
+const webhook = JSON.parse(fs.readFileSync('src/config/webhooks.json', 'utf8'));
 const packageJSON = JSON.parse(fs.readFileSync('package.json', 'utf-8'));
 
 const startLogs = new Discord.WebhookClient({
@@ -22,8 +22,7 @@ const shardLogs = new Discord.WebhookClient({
   url: webhook.shardLogs.url,
 });
 
-const doodabot = './src/bot.js';
-const manager = new Discord.ShardingManager(doodabot, {
+const manager = new Discord.ShardingManager('./src/bot.js', {
   totalShards: 2,
   token: process.env.DISCORD_TOKEN,
   respawn: true,
@@ -31,7 +30,7 @@ const manager = new Discord.ShardingManager(doodabot, {
 
 const app = express();
 
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
   res.send('Hello World');
 });
 
