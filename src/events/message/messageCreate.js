@@ -3,6 +3,7 @@ import Discord from 'discord.js';
 export default async (client, message) => {
   const msg = message;
   const discordConfig = client.config.discord;
+
   if (msg.author.bot) return;
 
   const dmLog = new Discord.WebhookClient({
@@ -87,25 +88,25 @@ export default async (client, message) => {
 
   if (msg.guild) {
     let row = await client.database.queryAsync(
-      `SELECT * FROM \`guild\` WHERE \`Guild\` = '${msg.guild.id}';`
+      `SELECT * FROM guild WHERE Guild = '${msg.guild.id}';`
     );
 
     let guildSettings = row[0];
 
     if (!guildSettings) {
       await client.database.queryAsync(
-        `INSERT INTO \`guild\` (\`Guild\`, \`Prefix\`) VALUES ('${msg.guild.id}', '${discordConfig.prefix}');`
+        `INSERT INTO guild (Guild, Prefix) VALUES ('${msg.guild.id}', '${discordConfig.prefix}');`
       );
 
       row = await client.database.queryAsync(
-        `SELECT * FROM \`guild\` WHERE \`Guild\` = '${msg.guild.id}';`
+        `SELECT * FROM guild WHERE Guild = '${msg.guild.id}';`
       );
       guildSettings = row[0];
     }
 
     if (!guildSettings || !guildSettings.Prefix) {
       row = await client.database.queryAsync(
-        `UPDATE \`guild\` SET \`Prefix\` = '${discordConfig.prefix}' WHERE \`Guild\` = '${msg.guild.id}';`
+        `UPDATE guild SET Prefix = '${discordConfig.prefix}' WHERE Guild = '${msg.guild.id}';`
       );
       guildSettings = row[0];
     }
@@ -125,17 +126,14 @@ export default async (client, message) => {
 
     const [, matchedPrefix] = msg.content.toLowerCase().match(prefixRegex);
 
-    const args = message.content
-      .slice(matchedPrefix.length)
-      .trim()
-      .split(/ +/g);
+    const args = msg.content.slice(matchedPrefix.length).trim().split(/ +/g);
 
     const cmdName = args.shift().toLowerCase();
 
     const cmd = client.commands.get(cmdName);
 
     if (!cmd) return;
-    else await cmd.run(client, message, args);
+    else await cmd.run(client, msg, args);
 
     if (
       msg.mentions.users.first() &&
