@@ -5,7 +5,8 @@ export default {
   colors: {
     success: '#57F287',
     error: '#ED4245',
-    normal: '#deb887',
+    normal: '#F0F8FF',
+    deb: '#deb887',
   },
 
   discord: {
