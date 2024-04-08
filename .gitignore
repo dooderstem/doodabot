@@ -18,3 +18,4 @@ node_modules/
 local.session.sql
 */config/webhooks.json
 tempCodeRunnerFile.javascript
+src/commands/test
