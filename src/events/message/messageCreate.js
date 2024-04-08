@@ -136,7 +136,15 @@ export default async (client, message) => {
     if (cmd.data.perms && cmd.data.perms.length) {
       for (const perm of cmd.data.perms) {
         if (!msg.channel.permissionsFor(msg.member).has(perm)) {
-          return msg.reply('Access Denied: Missing permissions!');
+          let errorEmbed = new Discord.EmbedBuilder()
+            .setTitle('⛔ Access Denied: Missing permissions!')
+            .setDescription(
+              `This command requires **${cmd.data.perms}** permissions.`
+            )
+            .setColor(client.config.colors.error);
+          return msg.channel.send({
+            embeds: [errorEmbed],
+          });
         }
       }
     }
