@@ -2,7 +2,6 @@ import Discord from 'discord.js';
 
 export default async (client, message) => {
   const msg = message;
-  const discordConfig = client.config.discord;
 
   if (msg.author.bot) return;
 
@@ -43,11 +42,11 @@ export default async (client, message) => {
           },
           {
             name: '📨┆Invite me',
-            value: `Invite Bot in your own server! [Click here](${discordConfig.botInvite})`,
+            value: `Invite Bot in your own server! [Click here](${client.config.discord.botInvite})`,
           },
           {
             name: '❓┆Need support?',
-            value: `For questions you can join our [support server](${discordConfig.serverInvite})!`,
+            value: `For questions you can join our [support server](${client.config.discord.serverInvite})!`,
           },
           {
             name: '🐞┆Found a bug?',
@@ -60,11 +59,11 @@ export default async (client, message) => {
       new Discord.ActionRowBuilder().addComponents(
         new Discord.ButtonBuilder()
           .setLabel('Invite')
-          .setURL(`${discordConfig.botInvite}`)
+          .setURL(`${client.config.discord.botInvite}`)
           .setStyle(5),
         new Discord.ButtonBuilder()
           .setLabel('Support server')
-          .setURL(`${discordConfig.serverInvite}`)
+          .setURL(`${client.config.discord.serverInvite}`)
           .setStyle(5)
       ),
     ],
