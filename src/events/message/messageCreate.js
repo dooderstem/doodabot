@@ -1,12 +1,10 @@
 import Discord from 'discord.js';
 
-export default async (client, message) => {
-  const msg = message;
-
+export default async (bot, msg) => {
   if (msg.author.bot) return;
 
   const dmLog = new Discord.WebhookClient({
-    url: client.webhooks.dmLogs.url,
+    url: bot.webhooks.dmLogs.url,
   });
 
   const dmLogEm = new Discord.EmbedBuilder()
@@ -16,7 +14,7 @@ export default async (client, message) => {
       name: `**👤┆Send By:** ${msg.author} (${msg.author.tag})`,
       value: `__**💬┆Message:**__\n${msg.content}` || 'No content provided.',
     })
-    .setColor(client.config.colors.normal)
+    .setColor(bot.config.colors.deb)
     .setTimestamp();
 
   if (msg.attachments.size > 0)
@@ -42,28 +40,28 @@ export default async (client, message) => {
           },
           {
             name: '📨┆Invite me',
-            value: `Invite Bot in your own server! [Click here](${client.config.discord.botInvite})`,
+            value: `Invite Bot in your own server! [Click here](${bot.config.discord.botInvite})`,
           },
           {
             name: '❓┆Need support?',
-            value: `For questions you can join our [support server](${client.config.discord.serverInvite})!`,
+            value: `For questions you can join our [support server](${bot.config.discord.serverInvite})!`,
           },
           {
             name: '🐞┆Found a bug?',
             value: `Report all bugs via: \`/report bug\`!`,
           }
         )
-        .setColor(client.config.colors.normal),
+        .setColor(bot.config.colors.normal),
     ],
     components: [
       new Discord.ActionRowBuilder().addComponents(
         new Discord.ButtonBuilder()
           .setLabel('Invite')
-          .setURL(`${client.config.discord.botInvite}`)
+          .setURL(`${bot.config.discord.botInvite}`)
           .setStyle(5),
         new Discord.ButtonBuilder()
           .setLabel('Support server')
-          .setURL(`${client.config.discord.serverInvite}`)
+          .setURL(`${bot.config.discord.serverInvite}`)
           .setStyle(5)
       ),
     ],
@@ -72,7 +70,7 @@ export default async (client, message) => {
   if (msg.channel.type === 1) {
     if (
       msg.mentions.users.first() &&
-      msg.mentions.users.first().id == client.user.id &&
+      msg.mentions.users.first().id == bot.user.id &&
       msg.content.split(' ').length == 1
     ) {
       msg.react('👑');
@@ -86,25 +84,25 @@ export default async (client, message) => {
   }
 
   if (msg.guild) {
-    let row = await client.database.queryAsync(
+    let row = await bot.database.queryAsync(
       `SELECT * FROM guild WHERE Guild = '${msg.guild.id}';`
     );
 
     let guildSettings = row[0];
 
     if (!guildSettings) {
-      await client.database.queryAsync(
+      await bot.database.queryAsync(
         `INSERT INTO guild (Guild, Prefix) VALUES ('${msg.guild.id}', '${discordConfig.prefix}');`
       );
 
-      row = await client.database.queryAsync(
+      row = await bot.database.queryAsync(
         `SELECT * FROM guild WHERE Guild = '${msg.guild.id}';`
       );
       guildSettings = row[0];
     }
 
     if (!guildSettings || !guildSettings.Prefix) {
-      row = await client.database.queryAsync(
+      row = await bot.database.queryAsync(
         `UPDATE guild SET Prefix = '${discordConfig.prefix}' WHERE Guild = '${msg.guild.id}';`
       );
       guildSettings = row[0];
@@ -118,7 +116,7 @@ export default async (client, message) => {
     const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
     const prefixRegex = new RegExp(
-      `^(<@!?${client.user.id}>|${escapeRegex(pfx)})\\s*`
+      `^(<@!?${bot.user.id}>|${escapeRegex(pfx)})\\s*`
     );
 
     if (!prefixRegex.test(msg.content.toLowerCase())) return;
@@ -129,7 +127,7 @@ export default async (client, message) => {
 
     const cmdName = args.shift().toLowerCase();
 
-    const cmd = client.commands.get(cmdName);
+    const cmd = bot.commands.get(cmdName);
 
     if (!cmd) return;
 
@@ -137,11 +135,11 @@ export default async (client, message) => {
       for (const perm of cmd.data.perms) {
         if (!msg.channel.permissionsFor(msg.member).has(perm)) {
           let errorEmbed = new Discord.EmbedBuilder()
-            .setTitle('⛔ Access Denied: Missing permissions!')
+            .setTitle('⛔┆ Access Denied: Missing permissions!')
             .setDescription(
               `This command requires **${cmd.data.perms}** permissions.`
             )
-            .setColor(client.config.colors.error);
+            .setColor(bot.config.colors.error);
           return msg.channel.send({
             embeds: [errorEmbed],
           });
@@ -149,11 +147,11 @@ export default async (client, message) => {
       }
     }
 
-    await cmd.run(client, msg, args);
+    await cmd.run(bot, msg, args);
 
     if (
       msg.mentions.users.first() &&
-      msg.mentions.users.first().id == client.user.id &&
+      msg.mentions.users.first().id == bot.user.id &&
       cmdName.length === 0
     ) {
       msg.react('👑');
