@@ -1,4 +1,3 @@
-import { SlashCommandBuilder } from '@discordjs/builders';
 import { Routes } from 'discord-api-types/v9';
 import { REST } from '@discordjs/rest';
 import fs from 'fs';
@@ -41,18 +40,16 @@ async function loadCommands(directory, collection) {
       const cmdFile = path.join(directory, dir, file);
       const { default: cmd } = await import(`../../../${cmdFile}`);
 
-      if (
-        cmd.data instanceof SlashCommandBuilder &&
-        cmd.data.name.length >= 2 &&
-        typeof cmd.run == 'function'
-      )
+      if (cmd.data && cmd.data.name.length >= 2 && typeof cmd.run == 'function')
         collection.set(cmd.data.name, cmd);
-      else if (
-        cmd.data &&
-        cmd.data.name.length >= 2 &&
-        typeof cmd.run == 'function'
-      )
-        collection.set(cmd.data.name, cmd);
+      else {
+        console.log(
+          chalk.blue('System'),
+          chalk.white('>>'),
+          chalk.yellow('WARNING') + ':',
+          chalk.white(`Command in '${file}' is not formatted correctly!`)
+        );
+      }
     }
   }
   return collection;
