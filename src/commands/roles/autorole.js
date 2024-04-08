@@ -43,7 +43,5 @@ export default {
       roleName = findByRoleName.name;
       console.log(roleName);
     }
-
-    // console.log(roleID);
   },
 };
