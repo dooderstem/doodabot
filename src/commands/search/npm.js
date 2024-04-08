@@ -4,7 +4,7 @@ import pop from 'popcat-wrapper';
 export default {
   data: {
     name: 'npm',
-    description: 'Search NPM for a package',
+    desc: 'Search NPM for a package',
   },
   run: async function (client, msg, args) {
     if (!args.length) return msg.reply(`Please provide a search term.`);

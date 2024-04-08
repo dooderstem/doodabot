@@ -1,8 +1,8 @@
 export default {
   data: {
     name: 'calc',
+    desc: '',
     aliases: ['calculator', 'calculate'],
-    description: '',
   },
   run: async function (client, msg, args) {
     if (!args.length) return;

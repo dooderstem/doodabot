@@ -3,7 +3,7 @@ import Discord from 'discord.js';
 export default {
   data: {
     name: 'autorole',
-    description: '',
+    desc: '',
     aliases: [],
     perms: [],
   },
@@ -14,6 +14,12 @@ export default {
 
     let { autorole_enabled, autorole_role } = rows[0];
     autorole_enabled = Boolean(autorole_enabled);
+
+    // console.log(this.data.perms[0]);
+    // console.log(msg.member.permissions);
+    // console.log(msg.channel.permissionsFor(msg.member).has(this.data.perms[0]));
+
+    // console.log(msg.member.hasPermission(this.data.perms[0]));
 
     if (!args.length) {
       if (!autorole_enabled && !autorole_role) {
