@@ -44,6 +44,15 @@ console.log(
   chalk.white(`...`)
 );
 
+console.log(chalk.red(`© dooderstem | 2023 - ${new Date().getFullYear()}`));
+console.log(chalk.red(`All rights reserved`));
+console.log(
+  chalk.blue(chalk.bold(`System`)),
+  chalk.white(`>>`),
+  chalk.red(`Version ${packageJSON.version}`),
+  chalk.green(`loaded`)
+);
+
 manager.on('shardCreate', (shard) => {
   let embed = new Discord.EmbedBuilder()
     .setTitle(`🆙・Launching shard`)
@@ -113,8 +122,6 @@ manager.on('shardCreate', (shard) => {
   });
 
   shard.on('shardDisconnect', (event) => {
-    console.log('disconnected');
-    console.log(event);
     const embed = new Discord.EmbedBuilder()
       .setTitle(`🚨・Shard ${shard.id + 1}/${manager.totalShards} disconnected`)
       .setDescription('Dumping socket close event...')
