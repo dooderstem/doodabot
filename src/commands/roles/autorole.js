@@ -5,7 +5,7 @@ export default {
     name: 'autorole',
     desc: '',
     aliases: [],
-    perms: [],
+    perms: ['Administrator'],
   },
   run: async function (bot, msg, args) {
     let rows = await bot.database.queryAsync(
