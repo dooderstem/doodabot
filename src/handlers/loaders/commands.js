@@ -1,6 +1,6 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
+import { REST } from '@discordjs/rest';
 import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
@@ -51,9 +51,8 @@ async function loadCommands(directory, collection) {
         cmd.data &&
         cmd.data.name.length >= 2 &&
         typeof cmd.run == 'function'
-      ) {
+      )
         collection.set(cmd.data.name, cmd);
-      }
     }
   }
   return collection;
