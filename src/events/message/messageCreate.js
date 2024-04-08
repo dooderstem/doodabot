@@ -133,7 +133,16 @@ export default async (client, message) => {
     const cmd = client.commands.get(cmdName);
 
     if (!cmd) return;
-    else await cmd.run(client, msg, args);
+
+    if (cmd.data.perms && cmd.data.perms.length) {
+      for (const perm of cmd.data.perms) {
+        if (!msg.channel.permissionsFor(msg.member).has(perm)) {
+          return msg.reply('Access Denied: Missing permissions!');
+        }
+      }
+    }
+
+    await cmd.run(client, msg, args);
 
     if (
       msg.mentions.users.first() &&
