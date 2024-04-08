@@ -35,13 +35,10 @@ export default {
       (role) => role.name === args[0]
     );
 
-    let roleName;
-    if (findByRoleID) {
-      roleName = await msg.guild.roles.fetch(findByRoleID);
-      console.log(roleName.name);
-    } else if (findByRoleName) {
-      roleName = findByRoleName.name;
-      console.log(roleName);
-    }
+    let roleName = findByRoleID
+      ? (await msg.guild.roles.fetch(findByRoleID)).name
+      : findByRoleName
+      ? findByRoleName.name
+      : null;
   },
 };
