@@ -40,6 +40,7 @@ async function loadCommands(directory, collection) {
       const cmdFile = path.join(directory, dir, file);
       const { default: cmd } = await import(`../../../${cmdFile}`);
 
+      if (cmd) if (dir == 'admin') cmd.admin = true;
       if (cmd.data && cmd.data.name.length >= 2 && typeof cmd.run == 'function')
         collection.set(cmd.data.name, cmd);
       else {

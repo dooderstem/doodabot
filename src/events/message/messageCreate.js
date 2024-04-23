@@ -144,7 +144,7 @@ export default async (bot, msg) => {
     if (cmd.data.perms && cmd.data.perms.length) {
       for (const perm of cmd.data.perms) {
         if (!msg.channel.permissionsFor(msg.member).has(perm)) {
-          let errorEmbed = new Discord.EmbedBuilder()
+          const errorEmbed = new Discord.EmbedBuilder()
             .setTitle('⛔┆ Access Denied: Missing permissions!')
             .setDescription(
               `This command requires **${cmd.data.perms}** permissions.`
@@ -157,16 +157,16 @@ export default async (bot, msg) => {
       }
     }
 
-    await cmd.run(bot, msg, args);
+    if (cmd.admin) {
+      const isAdmin = bot.config.staff.admins.some(
+        (admin) => msg.author.id == admin.id
+      );
 
-    if (
-      msg.mentions.users.first() &&
-      msg.mentions.users.first().id == bot.user.id &&
-      cmdName.length === 0
-    ) {
-      msg.react('👑');
-      msg.react('⚔️');
-      msg.channel.send(mentionBuilder);
+      const isOwner = msg.author.id == bot.config.staff.owner.id;
+
+      if (!isAdmin && !isOwner) return msg.reply('This is an ADMIN command!');
     }
+
+    await cmd.run(bot, msg, args);
   }
 };
