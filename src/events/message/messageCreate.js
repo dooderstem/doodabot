@@ -129,6 +129,16 @@ export default async (bot, msg) => {
 
     const cmd = bot.commands.get(cmdName);
 
+    if (
+      msg.mentions.users.first() &&
+      msg.mentions.users.first().id == bot.user.id &&
+      cmdName.length === 0
+    ) {
+      msg.react('👑');
+      msg.react('⚔️');
+      msg.channel.send(mentionBuilder);
+    }
+
     if (!cmd) return;
 
     if (cmd.data.perms && cmd.data.perms.length) {
