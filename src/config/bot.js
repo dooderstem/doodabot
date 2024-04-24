@@ -1,7 +1,21 @@
 import dotenv from 'dotenv';
+
 dotenv.config();
 
 export default {
+  staff: {
+    owner: {
+      name: 'dooderstem',
+      id: '1028024502891843667',
+    },
+    admins: [
+      {
+        name: '',
+        id: '',
+      },
+    ],
+  },
+
   colors: {
     success: '#57F287',
     error: '#ED4245',
